@@ -13,7 +13,7 @@ startingElo = 0
 def getElo():
     currentElo = r.get(url = "https://api.brawlhalla.com/rankings/1v1/" + reigon + "/1", params = {'name':username, "api_key":apiKey}).json()[0]['rating']
     f = open("brawlelo.txt", "w")
-    f.write("Current Elo: " + str(currentElo) + " Elo Change: " + str(startingElo - currentElo))
+    f.write("Current Elo: " + str(currentElo) + " Elo Change: " + str(currentElo - startingElo))
     f.close()
     print("Current Elo:", currentElo)
     s.enter(60, 1, getElo)
