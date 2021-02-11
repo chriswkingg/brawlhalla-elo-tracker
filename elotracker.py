@@ -9,6 +9,7 @@ apiKey = ""
 currentElo = 0
 startingElo = 0
 
+#Writes to file and prints so the user knows when its updated
 def writeElo():
     global startingElo, currentElo
     print("Elo: " + str(currentElo))
@@ -16,12 +17,14 @@ def writeElo():
     f.write("Current Elo: " + str(currentElo) + " Elo Change: " + str(currentElo - startingElo))
     f.close()
 
+#Function gets called once per min in ones mode
 def getOnes():
     global startingElo, currentElo, firstID, apiKey
     currentElo = r.get(url = "https://api.brawlhalla.com/player/" + firstID + "/ranked", params = {"api_key":apiKey}).json()["rating"]
     writeElo()
     s.enter(60, 1, getOnes)
 
+#Function gets called once per min in twos mode
 def getTwos():
     global startingElo, currentElo, firstID, secondID, apiKey
     response = r.get(url = "https://api.brawlhalla.com/player/" + firstID + "/ranked", params = {"api_key":apiKey}).json()
@@ -33,6 +36,7 @@ def getTwos():
     
     s.enter(60, 1, getTwos)    
 
+#Gets basline elo and starts program in ones mode
 def startOnes():
     global startingElo, currentElo, firstID, apiKey
     response = r.get(url = "https://api.brawlhalla.com/player/" + firstID + "/ranked", params = {"api_key":apiKey}).json()
@@ -43,6 +47,7 @@ def startOnes():
     s.enter(60, 1, getOnes)
     s.run()
 
+#Gets basline elo, gets second player id, and starts program in twos mode
 def startTwos():
     global startingElo, currentElo, firstID, secondID, apiKey
     response = r.get(url = "https://api.brawlhalla.com/player/" + firstID + "/ranked", params = {"api_key":apiKey}).json()
@@ -62,7 +67,7 @@ def startTwos():
 
 #Main
 if(len(sys.argv) != 4):
-    print("Incorrect number arguments:\n python main.py bracket brawlID apiKey")
+    print("Incorrect number of arguments:\n python elotracker.py bracket brawlID apiKey")
     exit()
 firstID = sys.argv[2]
 apiKey = sys.argv[3]
