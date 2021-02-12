@@ -39,8 +39,7 @@ def getTwos():
 #Gets basline elo and starts program in ones mode
 def startOnes():
     global startingElo, currentElo, firstID, apiKey
-    response = r.get(url = "https://api.brawlhalla.com/player/" + firstID + "/ranked", params = {"api_key":apiKey}).json()
-    startingElo = response["rating"]
+    startingElo = r.get(url = "https://api.brawlhalla.com/player/" + firstID + "/ranked", params = {"api_key":apiKey}).json()["rating"]
     currentElo = startingElo
     writeElo()
     
